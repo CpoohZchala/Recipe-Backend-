@@ -4,23 +4,20 @@ const routes = express.Router();
 const { uploadAvatar } = require("../middleware/uploadSingleFile");
 const { checkAuthorization } = require("../middleware/checkAuthentication");
 
-// Controllers (REAL files you have)
-const loginController     = require("../controllers/loginController");
-const introController     = require("../controllers/introController");
-const categoryController  = require("../controllers/categoryController");
-const cuisinesController  = require("../controllers/cuisinesController");
-const recipeController    = require("../controllers/recipeController");
-const reviewController    = require("../controllers/reviewController");
-const faqController       = require("../controllers/faqController");
-const adsController       = require("../controllers/adsController");
-const settingController   = require("../controllers/settingController");
+const loginController = require("../controllers/loginController");
+const introController = require("../controllers/introController");
+const categoryController = require("../controllers/categoryController");
+const cuisinesController = require("../controllers/cuisinesController");
+const recipeController = require("../controllers/recipeController");
+const reviewController = require("../controllers/reviewController");
+const faqController = require("../controllers/faqController");
+const adsController = require("../controllers/adsController");
+const settingController = require("../controllers/settingController");
 
-// Routes For Sign Up
+// Auth
 routes.post("/CheckRegisterUser", loginController.CheckRegisterUser);
 routes.post("/Signup", loginController.SignUp);
 routes.post("/VerifyOtp", loginController.VerifyOtp);
-
-// Routes For Sign In
 routes.post("/SignIn", loginController.SignIn);
 routes.post("/isVerifyAccount", loginController.isVerifyAccount);
 routes.post("/resendOtp", loginController.resendOtp);
@@ -55,7 +52,7 @@ routes.post("/GetRecipeByCategoryId", recipeController.GetRecipeByCategoryId);
 routes.post("/FilterRecipe", recipeController.FilterRecipe);
 routes.post("/SearchRecipes", recipeController.SearchRecipes);
 
-// Favourite (⚠️ These must exist in recipeController OR move to the correct controller file)
+// Favourite (depends where you implemented it; could be recipeController or another controller)
 routes.post("/AddFavouriteRecipe", checkAuthorization, recipeController.AddFavouriteRecipe);
 routes.post("/GetAllFavouriteRecipes", checkAuthorization, recipeController.GetAllFavouriteRecipes);
 routes.post("/DeleteFavouriteRecipe", checkAuthorization, recipeController.DeleteFavouriteRecipe);
@@ -70,7 +67,7 @@ routes.post("/getAllFaq", faqController.getAllFaq);
 // Ads
 routes.post("/getAdmob", adsController.getAdmob);
 
-// Policy & Terms + Notifications (usually settingController)
+// Policy/Terms + Notification (usually in settingController)
 routes.post("/GetPolicyAndTerms", settingController.GetPolicyAndTerms);
 routes.post("/GetAllNotification", settingController.GetAllNotification);
 
