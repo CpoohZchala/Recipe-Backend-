@@ -1,12 +1,12 @@
 // Importing required modules 
 const admin = require('firebase-admin');
 
-const serviceAccount = require('../firebase.json');
+// const serviceAccount = require('../firebase.json');
 
-// Initialize Firebase Admin SDK
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
+// // Initialize Firebase Admin SDK
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount)
+// });
 
 // // const registrationTokens = "cLte7Mh0SaO6lkCTR9qDlV:APA91bGGKOob7C1QMQ1SaEuLCt9b_ddN7cftWYOqoUOOuP6zdtEgi3nvsmoAFVTRQuU0w4d1PugzGfTrG9WZfjPSaTPHeiWGxFjAT4E_lmir7WFR_Lq8QLRymKOZyRBxQZ0wRC99Egn9"
 
