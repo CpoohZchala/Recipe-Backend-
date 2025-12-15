@@ -1,5 +1,5 @@
 // Importing required modules 
-const sha256 = require("sha256");
+const bcrypt = require("bcrypt");
 
 // Importing models
 const userModel = require("../model/userModel");
@@ -31,7 +31,7 @@ const login = async (req, res) => {
 
         // Extract data from the request body
         const email = req.body.email;
-        const password = sha256.x2(req.body.password);
+        const password = req.body.password;
 
         const isExistEmail = await adminLoginModel.findOne({ email });
 
@@ -42,7 +42,9 @@ const login = async (req, res) => {
 
         } else {
 
-            if (password !== isExistEmail.password) {
+            const isPasswordValid = await bcrypt.compare(password, isExistEmail.password);
+
+            if (!isPasswordValid) {
 
                 req.flash('error', 'We’re sorry, something went wrong when attempting to sign in.');
                 return res.redirect('back');
@@ -195,23 +197,25 @@ const changePassword = async (req, res) => {
 
     try {
 
-        const oldpassword = sha256.x2(req.body.oldpassword);
-        const newpassword = sha256.x2(req.body.newpassword);
-        const comfirmpassword = sha256.x2(req.body.comfirmpassword);
+        const oldpassword = req.body.oldpassword;
+        const newpassword = req.body.newpassword;
+        const comfirmpassword = req.body.comfirmpassword;
 
         if (newpassword !== comfirmpassword) {
             req.flash('error', 'Confirm password does not match');
             return res.redirect('back');
         }
 
-        const matchPassword = await adminLoginModel.findOne({ password: oldpassword });
+        const admin = await adminLoginModel.findById(req.session.userId);
+        const isPasswordValid = await bcrypt.compare(oldpassword, admin.password);
 
-        if (!matchPassword) {
+        if (!isPasswordValid) {
             req.flash('error', 'Current password is wrong, please try again');
             return res.redirect('back');
         }
 
-        await adminLoginModel.findOneAndUpdate({ password: oldpassword }, { $set: { password: newpassword } }, { new: true });
+        const hashedPassword = await bcrypt.hash(newpassword, 10);
+        await adminLoginModel.findByIdAndUpdate(req.session.userId, { $set: { password: hashedPassword } });
 
         return res.redirect("/dashboard")
 
