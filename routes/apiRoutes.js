@@ -1,74 +1,96 @@
+// Importing required modules 
 const express = require("express");
-const routes = express.Router();
 
+// Create an instance of the express router
+const routes = express();
+
+// Importing middleware functions for upload image
 const { uploadAvatar } = require("../middleware/uploadSingleFile");
+
+// Importing middleware functions for check user authentication
 const { checkAuthorization } = require("../middleware/checkAuthentication");
 
-const loginController = require("../controllers/loginController");
-const introController = require("../controllers/introController");
-const categoryController = require("../controllers/categoryController");
-const cuisinesController = require("../controllers/cuisinesController");
-const recipeController = require("../controllers/recipeController");
-const reviewController = require("../controllers/reviewController");
-const faqController = require("../controllers/faqController");
-const adsController = require("../controllers/adsController");
-const settingController = require("../controllers/settingController");
+// Import controllers
+const apiController = require("../controllers/apiController");
 
-// Auth
-routes.post("/CheckRegisterUser", loginController.CheckRegisterUser);
-routes.post("/Signup", loginController.SignUp);
-routes.post("/VerifyOtp", loginController.VerifyOtp);
-routes.post("/SignIn", loginController.SignIn);
-routes.post("/isVerifyAccount", loginController.isVerifyAccount);
-routes.post("/resendOtp", loginController.resendOtp);
+//Routes For Sign Up
+routes.post("/CheckRegisterUser", apiController.CheckRegisterUser);
 
-// Forgot/Reset
-routes.post("/ForgotPassword", loginController.ForgotPassword);
-routes.post("/ForgotPasswordVerification", loginController.ForgotPasswordVerification);
-routes.post("/ResetPassword", loginController.ResetPassword);
+routes.post("/Signup", apiController.SignUp);
 
-// User
-routes.post("/UserEdit", checkAuthorization, loginController.UserEdit);
-routes.post("/GetUser", checkAuthorization, loginController.GetUser);
-routes.post("/UploadImage", checkAuthorization, uploadAvatar, loginController.UploadImage);
-routes.post("/ChangePassword", checkAuthorization, loginController.ChangePassword);
-routes.post("/DeleteAccountUser", checkAuthorization, loginController.DeleteAccountUser);
+routes.post("/VerifyOtp", apiController.VerifyOtp);
 
-// Intro
-routes.post("/getAllIntro", introController.getAllIntro);
+//Routes For Sign In    
+routes.post("/SignIn", apiController.SignIn);
 
-// Category
-routes.post("/GetAllCategory", categoryController.GetAllCategory);
+routes.post("/isVerifyAccount", apiController.isVerifyAccount);
 
-// Cuisines
-routes.post("/GetAllCuisines", cuisinesController.GetAllCuisines);
+routes.post("/resendOtp", apiController.resendOtp);
 
-// Recipe
-routes.post("/GetAllRecipe", recipeController.GetAllRecipe);
-routes.post("/popularRecipe", recipeController.popularRecipe);
-routes.post("/recommendedRecipe", recipeController.recommendedRecipe);
-routes.post("/GetRecipeById", recipeController.GetRecipeById);
-routes.post("/GetRecipeByCategoryId", recipeController.GetRecipeByCategoryId);
-routes.post("/FilterRecipe", recipeController.FilterRecipe);
-routes.post("/SearchRecipes", recipeController.SearchRecipes);
+//Routes For Forgot Password and Reset Password
+routes.post("/ForgotPassword", apiController.ForgotPassword);
 
-// Favourite (depends where you implemented it; could be recipeController or another controller)
-routes.post("/AddFavouriteRecipe", checkAuthorization, recipeController.AddFavouriteRecipe);
-routes.post("/GetAllFavouriteRecipes", checkAuthorization, recipeController.GetAllFavouriteRecipes);
-routes.post("/DeleteFavouriteRecipe", checkAuthorization, recipeController.DeleteFavouriteRecipe);
+routes.post("/ForgotPasswordVerification", apiController.ForgotPasswordVerification);
 
-// Reviews
-routes.post("/AddReview", checkAuthorization, reviewController.AddReview);
-routes.post("/GetReviewByRecipeId", reviewController.GetReviewByRecipeId);
+routes.post("/ResetPassword", apiController.ResetPassword);
 
-// FAQ
-routes.post("/getAllFaq", faqController.getAllFaq);
+//Routes For User Edit
+routes.post("/UserEdit", checkAuthorization, apiController.UserEdit);
 
-// Ads
-routes.post("/getAdmob", adsController.getAdmob);
+routes.post("/GetUser", checkAuthorization, apiController.GetUser);
 
-// Policy/Terms + Notification (usually in settingController)
-routes.post("/GetPolicyAndTerms", settingController.GetPolicyAndTerms);
-routes.post("/GetAllNotification", settingController.GetAllNotification);
+routes.post("/UploadImage", checkAuthorization, uploadAvatar, apiController.UploadImage);
+
+routes.post("/ChangePassword", checkAuthorization, apiController.ChangePassword);
+
+routes.post("/DeleteAccountUser", checkAuthorization, apiController.DeleteAccountUser);
+
+// Routes For Intro
+routes.post("/getAllIntro", apiController.getAllIntro);
+
+//Routes For Category
+routes.post("/GetAllCategory", apiController.GetAllCategory);
+
+//Routes For Cuisines
+routes.post("/GetAllCuisines", apiController.GetAllCuisines);
+
+//Routes For Recipe
+routes.post("/GetAllRecipe", apiController.GetAllRecipe);
+
+routes.post("/popularRecipe", apiController.popularRecipe);
+
+routes.post("/recommendedRecipe", apiController.recommendedRecipe);
+
+routes.post("/GetRecipeById", apiController.GetRecipeById)
+
+routes.post("/GetRecipeByCategoryId", apiController.GetRecipeByCategoryId);
+
+routes.post("/FilterRecipe", apiController.FilterRecipe);
+
+routes.post("/SearchRecipes", apiController.SearchRecipes);
+
+//Routes For Favourite
+routes.post("/AddFavouriteRecipe", checkAuthorization, apiController.AddFavouriteRecipe);
+
+routes.post("/GetAllFavouriteRecipes", checkAuthorization, apiController.GetAllFavouriteRecipes);
+
+routes.post("/DeleteFavouriteRecipe", checkAuthorization, apiController.DeleteFavouriteRecipe);
+
+//Routes For Reviews
+routes.post("/AddReview", checkAuthorization, apiController.AddReview);
+
+routes.post("/GetReviewByRecipeId", apiController.GetReviewByRecipeId);
+
+// Routes For FAQ
+routes.post("/getAllFaq", apiController.getAllFaq);
+
+// Routes For ads
+routes.post("/getAdmob", apiController.getAdmob);
+
+//Routes For Policy and terms
+routes.post("/GetPolicyAndTerms", apiController.GetPolicyAndTerms);
+
+//Routes For NotiFiaction
+routes.post("/GetAllNotification", apiController.GetAllNotification);
 
 module.exports = routes;
