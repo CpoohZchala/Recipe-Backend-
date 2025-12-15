@@ -11,7 +11,7 @@ const { uploadAvatar } = require("../middleware/uploadSingleFile");
 const { checkAuthorization } = require("../middleware/checkAuthentication");
 
 // Import controllers
-const apiController = require("../controllers/apiController");
+// const apiController = require("../controllers/apiController");
 
 //Routes For Sign Up
 routes.post("/CheckRegisterUser", apiController.CheckRegisterUser);
